@@ -12,7 +12,7 @@ class DoctorsView extends GetView<BaseHomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black38,
+      backgroundColor: ColorsTheme.E9E4E4,
       body: Column(
         children: [
           Container(
@@ -56,7 +56,7 @@ class DoctorsView extends GetView<BaseHomeController> {
                       ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.only(right: 15),
                       child: Image.asset(
                         Res.ic_report,
                         height: 20,

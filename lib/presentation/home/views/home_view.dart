@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../infrastructure/theme/colors.theme.dart';
 import '../../../infrastructure/theme/text.theme.dart';
@@ -26,49 +27,51 @@ class HomeView extends GetView<BaseHomeController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Row(
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Get.back(result: true);
+                                  },
+                                  child: Icon(
+                                    size: 30,
+                                    Icons.ac_unit,
+                                    color: ColorsTheme.colWhite,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 15,
+                              ),
+                              Text(
+                                "Hello",
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: regularTextStyle(
+                                  fontSize: dimen14,
+                                  color: ColorsTheme.colWhite,
+                                ),
+                              ),
+                            ],
+                          ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: GestureDetector(
-                              onTap: () {
-                                Get.back(result: true);
-                              },
-                              child: Icon(
-                                size: 30,
-                                Icons.ac_unit,
+                            padding: const EdgeInsets.only(left: 15, top: 10),
+                            child: Text(
+                              "Ajay",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: regularTextStyle(
+                                fontSize: dimen18,
                                 color: ColorsTheme.colWhite,
                               ),
                             ),
                           ),
-                          const SizedBox(
-                            width: 15,
-                          ),
-                          Text(
-                            "Hello",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: regularTextStyle(
-                              fontSize: dimen14,
-                              color: ColorsTheme.colWhite,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15, top: 10),
-                        child: Text(
-                          "Ajay",
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: regularTextStyle(
-                            fontSize: dimen18,
-                            color: ColorsTheme.colWhite,
-                          ),
-                        ),
-                      ),
-                    ]),
+                        ]),
                     Padding(
                       padding: const EdgeInsets.only(right: 15),
                       child: ClipRRect(
@@ -77,7 +80,8 @@ class HomeView extends GetView<BaseHomeController> {
                             width: 40,
                             height: 40,
                             decoration: BoxDecoration(
-                                image: DecorationImage(image: AssetImage(Res.ic_profile_black)),
+                                image: DecorationImage(
+                                    image: AssetImage(Res.ic_profile_black)),
                                 color: ColorsTheme.col797D7F,
                                 shape: BoxShape.circle),
                           )),
@@ -85,8 +89,11 @@ class HomeView extends GetView<BaseHomeController> {
                   ],
                 ),
                 Container(
-                  decoration: BoxDecoration(color: ColorsTheme.colWhite, borderRadius: BorderRadius.circular(40)),
-                  margin: const EdgeInsets.only(left: 16, right: 16, top: 40, bottom: 20),
+                  decoration: BoxDecoration(
+                      color: ColorsTheme.colWhite,
+                      borderRadius: BorderRadius.circular(40)),
+                  margin: const EdgeInsets.only(
+                      left: 16, right: 16, top: 20, bottom: 20),
                   padding: const EdgeInsets.only(left: 16, right: 8),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -104,7 +111,8 @@ class HomeView extends GetView<BaseHomeController> {
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: 'Search',
-                            hintStyle: regularTextStyle(fontSize: dimen14, color: ColorsTheme.colHint),
+                            hintStyle: regularTextStyle(
+                                fontSize: dimen14, color: ColorsTheme.colHint),
                           ),
                           readOnly: true,
                           onTap: () {},
@@ -113,6 +121,69 @@ class HomeView extends GetView<BaseHomeController> {
                     ],
                   ),
                 ),
+                Container(
+                    height: 60,
+                    child: Obx(
+                      () => ListView.builder(
+                          itemCount: controller.nextSevenDays.length,
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
+                          scrollDirection: Axis.horizontal,
+                          physics: const ScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {},
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      DateFormat('EE')
+                                          .format(
+                                              controller.nextSevenDays[index])
+                                          .substring(0, 2)
+                                          .toUpperCase(),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: regularTextStyle(
+                                        fontSize: dimen12,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        child: Container(
+                                          width: 40,
+                                          height: 40,
+
+                                          color:
+                                              index ==
+                                                      0
+                                                  ? Colors.blueGrey.shade700
+                                                  : Colors.white,
+                                          child: Center(
+                                            child: Text(
+                                              controller
+                                                  .nextSevenDays[index].day
+                                                  .toString(),
+                                              style: regularTextStyle(
+                                                fontSize: dimen12,
+                                                color: index ==
+                                                        0
+                                                    ? Colors.white
+                                                    : Colors.blueGrey,
+                                              ),
+                                            ),
+                                          ),
+                                        )),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                    )),
               ],
             ),
           ),
@@ -122,7 +193,8 @@ class HomeView extends GetView<BaseHomeController> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 15),
+                    padding: const EdgeInsets.only(
+                        top: 10, left: 15, right: 15, bottom: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -147,7 +219,8 @@ class HomeView extends GetView<BaseHomeController> {
                       ],
                     ),
                   ),
-                  Container(height: 80,
+                  Container(
+                    height: 100,
                     child: ListView.builder(
                         itemCount: 4,
                         shrinkWrap: true,
@@ -158,12 +231,11 @@ class HomeView extends GetView<BaseHomeController> {
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: Column(
-
                               children: [
                                 Image.asset(
                                   Res.ic_pulse,
-                                  height: 50,
-                                  width: 50,
+                                  height: 70,
+                                  width: 70,
                                 ),
                                 Text(
                                   "Covid-19",
@@ -171,10 +243,9 @@ class HomeView extends GetView<BaseHomeController> {
                                   overflow: TextOverflow.ellipsis,
                                   style: regularTextStyle(
                                     fontSize: dimen12,
-                                    color: ColorsTheme.colWhite,
+                                    color: ColorsTheme.colBlack,
                                   ),
                                 ),
-
                               ],
                             ),
                           );
@@ -241,18 +312,15 @@ class HomeView extends GetView<BaseHomeController> {
                   ),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment. spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
-
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             "Symptons of covid to watch out for",
-
                             style: regularTextStyle(
                               fontSize: dimen14,
                               color: ColorsTheme.colBlack,
@@ -260,38 +328,33 @@ class HomeView extends GetView<BaseHomeController> {
                           ),
                           Text(
                             "march 07",
-
                             style: regularTextStyle(
                               fontSize: dimen12,
                               color: ColorsTheme.colHint,
                             ),
                           ),
-
                         ],
                       ),
                     ),
                     Container(
-                        height: 80,
-                        width: 80,
-                        decoration: BoxDecoration(
+                      height: 80,
+                      width: 80,
+                      decoration: BoxDecoration(
                           color: ColorsTheme.colHint,
-                          borderRadius: const BorderRadius.all(Radius.circular(16)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(16)),
                           image: DecorationImage(
-                            image: AssetImage(Res.ic_pulse),fit:BoxFit.fill
-                          )
-                        ),
-                        // child: ClipRRect(
-                        //   borderRadius: BorderRadius.circular(10),
-                        //   child:
-                        // )
+                              image: NetworkImage(
+                                  "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg"),
+                              fit: BoxFit.fill
+                              // image: AssetImage(Res.ic_pulse),fit:BoxFit.fill
+                              )),
                     )
                   ],
                 ),
-
               ],
             ),
           ),
-
         ],
       ),
     );

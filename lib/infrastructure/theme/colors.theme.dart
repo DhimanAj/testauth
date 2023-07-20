@@ -17,4 +17,6 @@ class ColorsTheme {
   static Color grey = HexColor("#CBE2E1");
   static Color col215577 = HexColor('#215577');
   static Color col79D = HexColor("#797D7F33");
+  static Color E9E4E4 = HexColor("#E9E4E4");
+  static Color colLight = HexColor("#CCFFE5");
 }

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../infrastructure/core/base/base_view.dart';
+import '../../infrastructure/core/utils/snacbar.dart';
 import '../../infrastructure/theme/colors.theme.dart';
 import '../../infrastructure/theme/text.theme.dart';
 import '../../res.dart';
@@ -88,9 +89,12 @@ class SignupScreen extends BaseView<SignupController> {
           padding: const EdgeInsets.only(top: 50, bottom: 70),
           child: InkWell(
             onTap: () {
-              if(controller.nameController.text.trim().isNotEmpty){
+              if(controller.nameController.text.trim().isNotEmpty && controller.imageUrl.value.isNotEmpty){
                 controller.registerUser();
                 // controller.singUp();
+              }else{
+                SnackBarUtil.showError(message: 'Please Add Image and Name');
+
               }
             },
             child: Container(

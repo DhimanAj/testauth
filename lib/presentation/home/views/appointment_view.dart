@@ -12,7 +12,7 @@ class AppointmentView extends GetView<BaseHomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black38,
+      backgroundColor: ColorsTheme.E9E4E4,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -242,7 +242,7 @@ class AppointmentView extends GetView<BaseHomeController> {
                   ),
                 ),
                 Container(
-                  decoration: BoxDecoration(color: Colors.black26, borderRadius: BorderRadius.circular(40)),
+                  decoration: BoxDecoration(color: Colors.black12, borderRadius: BorderRadius.circular(40)),
                   margin: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
                   child: Row(
