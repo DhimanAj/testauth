@@ -6,6 +6,7 @@ class Res {
   static const String ic_about = "assets/images/ic_about.png";
   static const String ic_calander = "assets/images/ic_calander.png";
   static const String ic_file = "assets/images/ic_file.png";
+  static const String ic_google = "assets/ic_google.png";
   static const String ic_heart_red = "assets/images/ic_heart_red.png";
   static const String ic_like = "assets/images/ic_like.png";
   static const String ic_office = "assets/images/ic_office.png";

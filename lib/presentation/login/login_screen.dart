@@ -8,6 +8,7 @@ import '../../infrastructure/core/utils/snacbar.dart';
 import '../../infrastructure/navigation/routes.dart';
 import '../../infrastructure/theme/colors.theme.dart';
 import '../../infrastructure/theme/text.theme.dart';
+import '../../res.dart';
 import 'controllers/login_controller.dart';
 
 class LoginScreen extends BaseView<LoginController> {
@@ -118,6 +119,22 @@ class LoginScreen extends BaseView<LoginController> {
                   child: Text(
                     'next'.tr,
                     style: semiBoldTextStyle(fontSize: 12.0, color: ColorsTheme.colWhite),
+                  )),
+            ),
+          ),
+
+          InkWell(
+            onTap: () {
+              controller.signInWithGoogle();
+            },
+            child: Container(
+              padding: const EdgeInsets.all(15),
+              decoration: BoxDecoration(color: ColorsTheme.colWhite, shape: BoxShape.circle),
+              child: Align(
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    Res.ic_google,
+                    width: 25,
                   )),
             ),
           ),

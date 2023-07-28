@@ -2,6 +2,7 @@
 class Assets {
   Assets._();
 
+  static const String assetsIcGoogle = 'assets/ic_google.png';
   static const String assetsMapStyle = 'assets/map_style.json';
   static const String flagsInn = 'assets/flags/inn.svg';
   static const String flagsSn = 'assets/flags/sn.svg';

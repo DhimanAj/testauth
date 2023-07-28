@@ -3,8 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fAuth;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
 import '../../../infrastructure/core/utils/country_json.dart';
@@ -26,6 +28,7 @@ class LoginController extends GetxController {
   var countryFlag = "".obs;
   var verificationID = "".obs;
   var countryCode = <Map<String, dynamic>>[].obs;
+  final GoogleSignIn googleSignIn = GoogleSignIn(scopes: <String>['email']);
 
   ProgressDialog progressDialog = ProgressDialog();
 
@@ -241,5 +244,59 @@ void handleException(Exception e) {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       isScrollControlled: true,
     );
+  }
+
+  Future<void> signInWithGoogle() async {
+    signInWithGoogleApi();
+  }
+
+  signInWithGoogleApi() async {
+    if (await googleSignIn.isSignedIn()) {
+      await googleSignIn.signOut();
+    }
+    try {
+      progressDialog.show();
+      final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication =
+        await googleSignInAccount.authentication;
+        final credential = GoogleAuthProvider.credential(
+            accessToken: googleSignInAuthentication.accessToken,
+            idToken: googleSignInAuthentication.idToken);
+
+        if (credential != null) {
+          var name = googleSignInAccount!.displayName??'';
+          var firstName = name.isEmpty?'':name.split(' ')[0];
+          var lastName = '';
+          if(name.split(' ').length > 1){
+            lastName = name.split(' ')[1];
+          }
+          var mapData = {'fName':firstName,'lName':lastName,'email':googleSignInAccount.email??'','social_id':googleSignInAccount.id};
+          progressDialog.dismiss();
+          Get.offAllNamed(Routes.home);
+        }
+      }
+      else{
+        progressDialog.dismiss();
+      }
+    }on FirebaseAuthException catch (e) {
+      debugPrint('FirebaseAuthException: ${e.toString()}');
+    } on PlatformException catch (e) {
+      progressDialog.dismiss();
+      if (e.code == 'network_error') {
+        SnackBarUtil.showError(message: "No internet connection");
+        // Util.customShowToast(msg: e.toString());
+      }
+      debugPrint('Platform Exception: ${e.toString()}');
+    }
+    on Exception catch (exception) {
+      progressDialog.dismiss();
+      handleException(exception);
+      print('Exception found: ${exception}');
+    } catch (e) {
+      progressDialog.dismiss();
+      print('Exception: ${e}');
+    }
   }
 }
