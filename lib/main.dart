@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
@@ -43,7 +42,7 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver{
         child: EnvironmentsBadge(
           child: GetMaterialApp(
 
-            initialRoute: Routes.splash,
+            initialRoute: Routes.bookingDetail,
             getPages: Nav.routes,
             debugShowCheckedModeBanner: false,
             theme: themeData,
@@ -58,11 +57,6 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver{
             locale: AppTranslations.locale,
             fallbackLocale: AppTranslations.fallbackLocale,
             translations: AppTranslations(),
-            localizationsDelegates: const [
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
           ),
         ),
       );

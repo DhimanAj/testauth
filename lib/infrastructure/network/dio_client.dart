@@ -1,18 +1,12 @@
-import 'dart:convert';
 import 'dart:io';
-import 'package:get/get.dart' as Get;
+
 import 'package:dio/dio.dart';
-import 'package:get/get_utils/get_utils.dart';
-import '../constants/app_constants.dart';
-import '../navigation/routes.dart';
-import '../preference/preference_manager.dart';
+
+import '../models/api_response_model.dart';
+import '../models/booking_detail_model.dart';
 import '../shared/custom_http_exception.dart';
 import '../shared/dio_logger.dart';
-import '../shared/snackbar.util.dart';
 import 'api_constants.dart';
-
-import 'model/notification_model.dart';
-import 'model/time_out_model.dart';
 
 class DioClient {
   Dio _dio = Dio();
@@ -21,21 +15,21 @@ class DioClient {
   var tag = 'ApiProvider';
   int count = 0;
 
-  //without multipart
-  DioClient.base({remoteBaseUrl, apiToken,language}) {
+  DioClient.base({remoteBaseUrl, deviceToken}) {
     var baseUrl = remoteBaseUrl ?? apiEndPoints.baseUrl;
     BaseOptions dioOptions = BaseOptions(
-        connectTimeout: const Duration(seconds: 60),
-        receiveTimeout: const Duration(seconds: 60),
+        connectTimeout: const Duration(seconds: 15),
+        // 10 seconds
+        receiveTimeout: const Duration(seconds: 15),
         receiveDataWhenStatusError: true,
         followRedirects: false,
         baseUrl: baseUrl);
     _dio = Dio(dioOptions);
-    _dio.interceptors.add(InterceptorsWrapper(onRequest: (RequestOptions options, handler) {
-      if (apiToken != null && apiToken.toString().isNotEmpty) {
-        options.headers = {'Authorization': 'Bearer $apiToken', 'content-type': 'application/json','language':language};
+    _dio.interceptors.add(QueuedInterceptorsWrapper(onRequest: (RequestOptions options, handler) {
+      if (deviceToken != null && deviceToken.toString().isNotEmpty) {
+        options.headers = {'Authorization': 'Bearer $deviceToken', 'content-type': 'application/json'};
       } else {
-        options.headers = {'content-type': 'application/json','language':language};
+        options.headers = {'content-type': 'application/json'};
       }
       DioLogger.onSend(tag, options);
       return handler.next(options);
@@ -44,93 +38,37 @@ class DioClient {
       return handler.next(response);
     }, onError: (DioError error, handler) async {
       _dioError = error;
-
+      print('errorrr');
+      print(error);
       return handler.next(error);
     }));
   }
 
-  //with multipart
-  DioClient.fBase({remoteBaseUrl, apiToken,language}) {
-    var baseUrl = remoteBaseUrl ?? apiEndPoints.baseUrl;
-    BaseOptions dioOptions = BaseOptions(
-        connectTimeout: const Duration(seconds: 60),
-        receiveTimeout: const Duration(seconds: 60),
-        receiveDataWhenStatusError: true,
-        followRedirects: false,
-        baseUrl: baseUrl);
-    _dio = Dio(dioOptions);
-    _dio.interceptors.add(InterceptorsWrapper(onRequest: (RequestOptions options, handler) {
-      DioLogger.onSend(tag, options);
-      if (apiToken != null && apiToken != '') {
-        options.headers = {'Authorization': 'Bearer $apiToken', 'content-type': 'multipart/form-data','language':language};
-      } else {
-        options.headers = {'content-type': 'multipart/form-data','language':language};
-      }
-      DioLogger.onSend(tag, options);
-      return handler.next(options);
-    }, onResponse: (Response response, handler) {
-      DioLogger.onSuccess(tag, response);
-      return handler.next(response);
-    }, onError: (DioError error, handler) async {
-      _dioError = error;
-      if (_checkSocketException(error)) {
-        SnackBarUtil.showError(message: 'no_internet_connection'.tr);
-      }
-      return handler.next(error);
-    }));
-  }
-
-  DioClient.mapBase() {
-    // var baseUrl = 'https://maps.googleapis.com/maps/api/geocode/';
-    var baseUrl = 'https://maps.googleapis.com/maps/api/';
-    BaseOptions dioOptions = BaseOptions(
-        connectTimeout: const Duration(seconds: 60),
-        receiveTimeout: const Duration(seconds: 60),
-        receiveDataWhenStatusError: true,
-        followRedirects: false,
-        baseUrl: baseUrl);
-    _dio = Dio(dioOptions);
-    _dio.interceptors.add(InterceptorsWrapper(onRequest: (RequestOptions options, handler) {
-      DioLogger.onSend(tag, options);
-      options.headers = {'Content-Type': 'application/json'};
-      return handler.next(options);
-    }, onResponse: (Response response, handler) {
-      DioLogger.onSuccess(tag, response);
-      return handler.next(response);
-    }, onError: (DioError error, handler) async {
-      _dioError = error;
-      return handler.next(error);
-    }));
-  }
 
   catchErrorHandler() {
-    print("Catch Error Handler >>>>>>>>>>>>>>");
-    print(_dioError!.response!.statusCode);
-    print(_dioError!.response!.statusMessage);
-    print(_dioError!.response!.data);
-
-    if (_dioError!.response!.statusCode == 500) {
-      throwIfNoSuccess('Something went wrong', _dioError!.response!.statusCode, _dioError!);
-    } else if (_dioError!.response!.statusCode == 400) {
-      throwIfNoSuccess(_dioError!.response!.data["message"]??'', _dioError!.response!.statusCode, _dioError!);
-    }  else  if(_dioError!.response!.statusCode == 401){
-      PreferenceManager.clear();
-      Get.Get.offAllNamed(Routes.login);
-      SnackBarUtil.showError(message: _dioError!.response!.data["message"].toString());
+    if (_checkSocketException(_dioError!)) {
+      throw CustomHttpException('', 200, _dioError!, 'socketError');
     } else {
-      throwIfNoSuccess(
-          _dioError!.response!.data == null ? _dioError!.response!.statusMessage : _dioError!.response!.data['message']??'',
-          _dioError!.response!.statusCode,
-          _dioError!);
+      throw CustomHttpException(
+          _dioError!.response!.data['message'] ?? '', _dioError!.response!.statusCode, _dioError!, 'error');
     }
-  }
-
-  void throwIfNoSuccess(String response, int? code, DioError exception) {
-    throw CustomHttpException(response, code, exception);
   }
 
   bool _checkSocketException(DioError err) {
     return err.type == DioErrorType.unknown && err.error is SocketException;
+  }
+
+
+  Future bookingDetailApi(Map<String, dynamic> data) async {
+    try {
+      FormData formData = FormData.fromMap(data);
+      Response response = await _dio.post(apiEndPoints.venderBookingDetail, data: formData);
+      return ApiResponseModel<BookingDetailModel>.fromJson(
+          response.data, (data) => BookingDetailModel.fromJson(data));
+    } catch (error, stacktrace) {
+      catchErrorHandler();
+    }
+    return null;
   }
 
 

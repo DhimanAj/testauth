@@ -1,4 +1,6 @@
 import 'package:auth/infrastructure/navigation/routes.dart';
+import 'package:auth/presentation/booking_details/booking_detail_binding.dart';
+import 'package:auth/presentation/booking_details/booking_detail_page.dart';
 import 'package:get/get.dart';
 
 import '../../presentation/home/bindings/home_binding.dart';
@@ -43,6 +45,12 @@ class Nav {
       name: Routes.home,
       page: () => BaseHomeScreen(),
       binding: HomeBinding(),
+    ),
+
+    GetPage(
+      name: Routes.bookingDetail,
+      page: () => BookingDetailPage(),
+      binding: BookingDetailBinding(),
     ),
 
 

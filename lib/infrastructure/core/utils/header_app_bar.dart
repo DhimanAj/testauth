@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 
 import '../../theme/colors.theme.dart';
 import '../../theme/text.theme.dart';
+
 class Header {
   static defaultAppBar(String title) {
     return Padding(
-        padding: const EdgeInsets.only(top: 30),
+        padding: const EdgeInsets.only(top: 15),
         child: Material(
           // elevation: 10,
           color: ColorsTheme.colWhite,
@@ -14,17 +15,14 @@ class Header {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
-                child: GestureDetector(
-                  onTap: () {
-                    Get.back(result: true);
-                  },
-                  child: Icon(
-                    size: 30,
-                    Icons.arrow_back,
-                    color: ColorsTheme.colPrimary,
-                  ),
+              GestureDetector(
+                onTap: () {
+                  Get.back(result: true);
+                },
+                child: Icon(
+                  size: 30,
+                  Icons.arrow_back,
+                  color: ColorsTheme.colPrimary,
                 ),
               ),
               Expanded(
