@@ -42,7 +42,7 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver{
         child: EnvironmentsBadge(
           child: GetMaterialApp(
 
-            initialRoute: Routes.bookingDetail,
+            initialRoute: Routes.home,
             getPages: Nav.routes,
             debugShowCheckedModeBanner: false,
             theme: themeData,
@@ -53,10 +53,10 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver{
                 child: child!,
               );
             },
-            supportedLocales: AppTranslations.locales,
-            locale: AppTranslations.locale,
-            fallbackLocale: AppTranslations.fallbackLocale,
-            translations: AppTranslations(),
+            // supportedLocales: AppTranslations.locales,
+            // locale: AppTranslations.locale,
+            // fallbackLocale: AppTranslations.fallbackLocale,
+            // translations: AppTranslations(),
           ),
         ),
       );
