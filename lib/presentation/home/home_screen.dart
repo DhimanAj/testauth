@@ -20,16 +20,10 @@ class BaseHomeScreen extends BaseView<BaseHomeController> {
     return Obx(() => Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            BottomNavigationIndicators(
-              activeIdx: controller.selectedIndex.value,
-              activeColor: Colors.amber,
-              numTabs: 4,
-              padding: 25,
-              height: 3,
-            ),
+
             Container(
               decoration: const BoxDecoration(
-                color: Colors.white,
+                color: Colors.black87,
                 boxShadow: <BoxShadow>[BoxShadow(color: Colors.black26, blurRadius: 15.0, spreadRadius: 1)],
               ),
               child: BottomNavigationBar(
@@ -37,49 +31,59 @@ class BaseHomeScreen extends BaseView<BaseHomeController> {
                 showUnselectedLabels: true,
                 showSelectedLabels: true,
                 unselectedItemColor: Colors.grey,
-                backgroundColor: Colors.white,
+                backgroundColor: Colors.black87,
                 selectedLabelStyle: semiBoldTextStyle(fontSize: dimen8, color: ColorsTheme.colPrimary),
                 unselectedLabelStyle: semiBoldTextStyle(fontSize: dimen8, color: ColorsTheme.colPrimary),
                 items: <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
                     icon: ImageIcon(
-                      AssetImage(Res.home_ic),
+                      AssetImage(Res.icHome),
                       size: 25,
                     ),
-                    label: ''.tr,
+                    label: 'Home'.tr,
                   ),
                   BottomNavigationBarItem(
                       icon: const Padding(
                         padding: EdgeInsets.only(),
                         child: ImageIcon(
-                          AssetImage(Res.ic_file),
+                          AssetImage(Res.icDate),
                           size: 20,
                         ),
                       ),
-                      label: ''.tr),
+                      label: 'Event'.tr),
                   BottomNavigationBarItem(
                     icon: const Padding(
                       padding: EdgeInsets.only(bottom: 2),
                       child: ImageIcon(
-                        AssetImage(Res.ic_calander),
+                        AssetImage(Res.icVideo),
                         size: 20,
                       ),
                     ),
-                    label: ''.tr,
+                    label: 'GR TV'.tr,
                   ),
                   BottomNavigationBarItem(
                     icon: const Padding(
                       padding: EdgeInsets.only(bottom: 2),
                       child: ImageIcon(
-                        AssetImage(Res.ic_setting),
+                        AssetImage(Res.icShoppingBag),
                         size: 20,
                       ),
                     ),
-                    label: ''.tr,
+                    label: 'Shop'.tr,
+                  ),
+                  BottomNavigationBarItem(
+                    icon: const Padding(
+                      padding: EdgeInsets.only(bottom: 2),
+                      child: ImageIcon(
+                        AssetImage(Res.icUser),
+                        size: 20,
+                      ),
+                    ),
+                    label: 'Profile'.tr,
                   ),
                 ],
                 currentIndex: controller.selectedIndex.value,
-                selectedItemColor: Colors.amber,
+                selectedItemColor: Colors.white,
                 onTap: (index) {
                   controller.onTabTapped(index);
                 },

@@ -35,4 +35,18 @@ class Res {
   static const String report = "assets/images/report.png";
   static const String sn = "assets/flags/sn.svg";
   static const String unlike = "assets/images/unlike.png";
+  static const String icVideo = "assets/images/icVideo.png";
+  static const String icBell = "assets/images/icBell.png";
+  static const String icMenu = "assets/images/icMenu.png";
+  static const String icSearch = "assets/images/icSearch.png";
+  static const String icBgImage = "assets/images/icBgImage.png";
+  static const String image1 = "assets/images/image1.png";
+  static const String image_spots = "assets/images/image_spots.png";
+
+
+  static const String icUser = "assets/images/icUser.png";
+  static const String icDate = "assets/images/icDate.png";
+  static const String icHome = "assets/images/icHome.png";
+  static const String icShoppingBag = "assets/images/icShoppingBag.png";
+  static const String icCamera = "assets/images/icCamera.png";
 }
