@@ -42,7 +42,7 @@ class MyAppState extends State<MyApp> with WidgetsBindingObserver{
         child: EnvironmentsBadge(
           child: GetMaterialApp(
 
-            initialRoute: Routes.home,
+            initialRoute: Routes.authorPost,
             getPages: Nav.routes,
             debugShowCheckedModeBanner: false,
             theme: themeData,

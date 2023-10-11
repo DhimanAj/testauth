@@ -1,9 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
 
 import '../models/api_response_model.dart';
-import '../models/booking_detail_model.dart';
+import '../models/post_detail_model.dart';
 import '../shared/custom_http_exception.dart';
 import '../shared/dio_logger.dart';
 import 'api_constants.dart';
@@ -59,17 +59,41 @@ class DioClient {
   }
 
 
-  Future bookingDetailApi(Map<String, dynamic> data) async {
+  Future getPostAuthorApi() async {
     try {
-      FormData formData = FormData.fromMap(data);
-      Response response = await _dio.post(apiEndPoints.venderBookingDetail, data: formData);
-      return ApiResponseModel<BookingDetailModel>.fromJson(
-          response.data, (data) => BookingDetailModel.fromJson(data));
+      Response response = await _dio.get(apiEndPoints.users);
+      return response.data;
     } catch (error, stacktrace) {
+      print(error);
       catchErrorHandler();
     }
     return null;
   }
 
+  Future getUserPostApi() async {
+    try {
+      Response response = await _dio.get(apiEndPoints.posts);
+      return response.data;
+    } catch (error, stacktrace) {
+      print(error);
+      catchErrorHandler();
+    }
+    return null;
+  }
+
+    Future getUserPostDetailApi(id) async {
+      try {
+        Response response = await _dio.get("${apiEndPoints.posts}/$id");
+        if (response != null) {
+
+          return PostDetails.fromJson(response.data);
+        }
+      } catch (error, stacktrace) {
+        catchErrorHandler();
+      }
+      return null;
+    }
+
 
 }
+

@@ -1,8 +1,8 @@
 class ApiConstants {
+  var baseUrl = 'https://jsonplaceholder.typicode.com/';
 
-  var baseUrl = 'https://v1.checkprojectstatus.com/cityroom/api/';
-  var venderBookingDetail = "vender-booking-detail";
+  var beers = "beers";
 
-
-
+  var users = "users";
+  var posts = "posts";
 }
